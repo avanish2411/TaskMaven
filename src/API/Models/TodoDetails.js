@@ -10,9 +10,9 @@ const TodoDetailSchema = new mongoose.Schema({
         enum: ["pending", "completed"],
         default: "pending"
     },
-    category: {
+    detail: {
         type: String,
-        required: true,
+        // required: true,
     },
     dueDate: {
         type: String,

@@ -6,6 +6,9 @@ const crypto = require("crypto");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 
+//adding moment 
+const moment = require("moment")
+
 // Creating Express app
 const app = express();
 const port = 3000;
@@ -37,6 +40,10 @@ app.listen(port, () => {
 // Importing User model
 require('./Models/UserDetails');
 const User = mongoose.model("UserInfo");
+
+// Importing TodoDetail model
+require('./Models/TodoDetails')
+const Todo = mongoose.model("ToDoInfo");
 
 // Register endpoint
 app.post('/register', async (req, res) => {
@@ -93,5 +100,42 @@ app.post("/login", async (req, res) => {
     } catch (error) {
         console.log("Login failed", error);
         res.status(500).json({ message: "Login failed" });
+    }
+});
+
+app.post("/todos/:oldUserId", async (req, res) => {
+    try {
+        const userId = req.params.oldUserId;
+        const { title, details } = req.body; // Extract details from request body
+
+        // Get current date in "YYYY-MM-DD" format
+        const dueDate = moment().format("YYYY-MM-DD");
+
+        // Create a new todo with the provided details
+        const newTodo = new Todo({
+            title,
+            //details,
+            dueDate
+        });
+
+        // Save the new todo to the database
+        await newTodo.save();
+
+        // Find the user by ID
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        // Add the new todo's ID to the user's todos array
+        user.todos.push(newTodo._id);
+        await user.save();
+
+        // Return success response
+        res.status(200).json({ message: "Todo added successfully", todo: newTodo });
+    } catch (error) {
+        console.log("Error adding todo:", error);
+        // Return error response
+        res.status(500).json({ message: "Todo not added" });
     }
 });
