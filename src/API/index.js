@@ -106,19 +106,15 @@ app.post("/login", async (req, res) => {
 app.post("/todos/:oldUserId", async (req, res) => {
     try {
         const userId = req.params.oldUserId;
-        const { title, details } = req.body; // Extract details from request body
-
-        // Get current date in "YYYY-MM-DD" format
+        const { title, detail } = req.body;
         const dueDate = moment().format("YYYY-MM-DD");
 
         // Create a new todo with the provided details
         const newTodo = new Todo({
             title,
-            //details,
+            detail,
             dueDate
         });
-
-        // Save the new todo to the database
         await newTodo.save();
 
         // Find the user by ID
@@ -130,8 +126,6 @@ app.post("/todos/:oldUserId", async (req, res) => {
         // Add the new todo's ID to the user's todos array
         user.todos.push(newTodo._id);
         await user.save();
-
-        // Return success response
         res.status(200).json({ message: "Todo added successfully", todo: newTodo });
     } catch (error) {
         console.log("Error adding todo:", error);
@@ -139,3 +133,4 @@ app.post("/todos/:oldUserId", async (req, res) => {
         res.status(500).json({ message: "Todo not added" });
     }
 });
+

@@ -12,7 +12,7 @@ const TodoDetailSchema = new mongoose.Schema({
     },
     detail: {
         type: String,
-        // required: true,
+        required: true,
     },
     dueDate: {
         type: String,
