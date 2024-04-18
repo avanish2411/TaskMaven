@@ -3,7 +3,7 @@ import {ModalPortal} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from '../Screens/HomeScreen';
-import Calendar from '../Screens/Calendar';
+import CalendarScreen from '../Screens/CalendarScreen';
 import Profile from '../Screens/Profile';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Tasks from 'react-native-vector-icons/FontAwesome5';
@@ -29,7 +29,7 @@ const Main = () => {
                         <Tasks name='tasks' color='black' size={24} />
                     )
             }} />
-            <Tab.Screen name='Calendar' component={Calendar} options={{
+            <Tab.Screen name='Calendar' component={CalendarScreen} options={{
                 tabBarLabel: "Calendar",
                 tabBarLabelStyle: { color: "#7CB9E8" },
                 headerShown: false,
