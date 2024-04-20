@@ -80,9 +80,9 @@ export default function Login() {
                 <Text style={{ color: 'white', fontSize: 24, textAlign: 'center' }}>Login</Text>
             </TouchableOpacity>
             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', paddingBottom: 15 }}>
-                <Text>Don't have a account? </Text>
+                <Text style={{color:'black',fontWeight:500}}>Don't have a account? </Text>
                 <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-                    <Text style={{ color: 'blue', paddingLeft: 8 }}>Register</Text>
+                    <Text style={{ color: 'blue', paddingLeft: 8 ,fontWeight:600}}>Register</Text>
                 </TouchableOpacity>
             </View>
             <View style={{ backgroundColor: 'grey', height: 2, marginTop: 8 }} />

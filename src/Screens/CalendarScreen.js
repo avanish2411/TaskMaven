@@ -35,14 +35,22 @@ export default function CalendarScreen() {
         <View style={{ flex: 1, backgroundColor: 'white' }}>
             <Calendar
                 onDayPress={handleDayPress}
+                theme={{
+                    todayTextColor:'red',
+                    selectedDayTextColor:'white',
+                    textMonthFontSize:24,
+                    textMonthFontWeight:'900',
+                    textDayHeaderFontWeight:'700',
+                    textDayHeaderFontSize:14,
+                }}
                 markedDates={{
-                    [selectedDate]: { selected: true, selectedColor: "green" },
+                    [selectedDate]: { selected: true, selectedColor: "green",},
                 }}
             />
             <View style={{ marginTop: 20 }} />
 
             <View style={{ flexDirection: "row", alignItems: "center", gap: 5, marginVertical: 10, marginHorizontal: 10, }}>
-                <Text>Completed Tasks</Text>
+                <Text style={{ color: 'black', fontWeight: 600, fontSize: 24 }}>Completed Tasks</Text>
                 <MaterialIcons name="arrow-drop-down" size={24} color="black" />
             </View>
 
