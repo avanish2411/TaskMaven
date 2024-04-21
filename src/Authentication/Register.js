@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, SafeAreaView, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, SafeAreaView, TextInput, TouchableOpacity, Alert, ImageBackground } from 'react-native';
 import Email from 'react-native-vector-icons/MaterialCommunityIcons';
+import User from 'react-native-vector-icons/Feather';
+import Password from 'react-native-vector-icons/Feather';
 import axios from 'axios';
 
 export default function Register({ navigation }) {
@@ -30,40 +32,52 @@ export default function Register({ navigation }) {
     };
 
     return (
-        <SafeAreaView style={{ padding: 25, marginTop: 60 }}>
-            <Text style={{ fontSize: 40, color: 'black', fontWeight: 'bold', paddingVertical: 5, textAlign: 'center' }}>Welcome</Text>
-            <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'red', paddingHorizontal: 8 }}>
-                <Email name='email-outline' size={28} color='black' />
+        <SafeAreaView style={{ flex: 1 }}>
+            <ImageBackground
+                source={require('../Assets/Images/register.png')}
+                style={{ flex: 1 }}
+            />
+            <Text style={{ position: 'absolute', fontSize: 50, color: 'white', fontWeight: 'bold', top: 150, left: 25 }}>Welcome</Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', position: 'absolute', top: 380, left: 25, borderColor: 'black', borderWidth: 2, width: 350, paddingVertical: 2, borderRadius: 16 }}>
+                <User name='user' size={28} color='black' style={{ paddingLeft: 10, paddingRight: 10 }} />
                 <TextInput
-                    placeholder='Write Your Email'
+                    placeholder='Name'
+                    placeholderTextColor='black'
+                    value={name}
+                    onChangeText={(text) => setName(text)} // Update the state with email input
+                    style={{ color: 'black', fontSize: 16, fontWeight: '400' }}
+                />
+            </View>
+            <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', position: 'absolute', top: 445, left: 25, borderColor: 'black', borderWidth: 2, width: 350, paddingVertical: 2, borderRadius: 16 }}>
+                <Email name='email-outline' size={28} color='black' style={{ paddingLeft: 10, paddingRight: 10 }} />
+                <TextInput
+                    placeholder='Email'
+                    placeholderTextColor='black'
                     value={email}
                     onChangeText={(text) => setEmail(text)} // Update the state with email input
+                    style={{ color: 'black', fontSize: 16, fontWeight: '400' }}
                 />
             </View>
-            <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'green', paddingHorizontal: 8 }}>
-                <Email name='email-outline' size={28} color='red' />
+            <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', position: 'absolute', top: 510, left: 25, borderColor: 'black', borderWidth: 2, width: 350, paddingVertical: 2, borderRadius: 16 }}>
+                <Password name='lock' size={28} color='black' style={{ paddingLeft: 10, paddingRight: 10 }} />
                 <TextInput
-                    placeholder='Write Your Name'
-                    value={name}
-                    onChangeText={(text) => setName(text)} // Update the state with name input
+                    placeholder='Password'
+                    placeholderTextColor='black'
+                    value={password}
+                    onChangeText={(text) => setPassword(text)} // Update the state with password input
+                    style={{ color: 'black', fontSize: 16, fontWeight: '400' }}
                 />
             </View>
-            <TextInput
-                placeholder='Write Your Password'
-                value={password}
-                onChangeText={(text) => setPassword(text)} // Update the state with password input
-                style={{ backgroundColor: 'grey', marginVertical: 10, paddingVertical: 10, paddingHorizontal: 15, borderRadius: 16, fontSize: 16 }}
-            />
-            <TouchableOpacity onPress={handleRegister} style={{ backgroundColor: 'blue', paddingVertical: 8, marginHorizontal: 60, marginVertical: 8, borderRadius: 25 }}>
+            <TouchableOpacity onPress={handleRegister} style={{ backgroundColor: 'blue', borderRadius: 25, top: 580, position: 'absolute', left: '15%', paddingHorizontal: 90, paddingVertical: 10 }}>
                 <Text style={{ color: 'white', fontSize: 24, textAlign: 'center' }}>Register</Text>
             </TouchableOpacity>
-            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', paddingBottom: 15 }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', position: 'absolute', top: 645, left: 92 }}>
                 <Text style={{ color: 'black', fontWeight: 700 }}>Already have an account?</Text>
                 <TouchableOpacity onPress={() => navigation.navigate('Login')}>
                     <Text style={{ color: 'blue', paddingLeft: 8, fontWeight: 600 }}>Login</Text>
                 </TouchableOpacity>
             </View>
-            <View style={{ backgroundColor: 'grey', height: 2, marginTop: 8 }} />
+            <View style={{ position: 'absolute', top: 675, left: 25, backgroundColor: 'grey', height: 2, width: 350 }} />
         </SafeAreaView>
     );
 }
