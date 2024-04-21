@@ -17,36 +17,36 @@ const Stack = createNativeStackNavigator();
 
 const Main = () => {
     return (
-        <Tab.Navigator>
+        <Tab.Navigator screenOptions={{ tabBarStyle: { height: 50 } }}>
             <Tab.Screen name='Home' component={HomeScreen} options={{
                 tabBarLabel: "Home",
-                tabBarLabelStyle: { color: "#7CB9E8" },
+                tabBarLabelStyle: { color: "blue", fontSize: 14 },
                 headerShown: false,
                 tabBarIcon: ({ focused }) =>
                     focused ? (
-                        <Tasks name='tasks' color='#7CB9E8' size={24} />
+                        <Tasks name='tasks' color='blue' size={24} />
                     ) : (
                         <Tasks name='tasks' color='black' size={24} />
                     )
             }} />
             <Tab.Screen name='Calendar' component={CalendarScreen} options={{
                 tabBarLabel: "Calendar",
-                tabBarLabelStyle: { color: "#7CB9E8" },
+                tabBarLabelStyle: { color: "blue", fontSize: 14 },
                 headerShown: false,
                 tabBarIcon: ({ focused }) =>
                     focused ? (
-                        <Dates name='calendar' color='#7CB9E8' size={24} />
+                        <Dates name='calendar' color='blue' size={24} />
                     ) : (
                         <Dates name='calendar' color='black' size={24} />
                     )
             }} />
             <Tab.Screen name='Profile' component={Profile} options={{
                 tabBarLabel: "Profile",
-                tabBarLabelStyle: { color: "#7CB9E8" },
+                tabBarLabelStyle: { color: "blue", fontSize: 14 },
                 headerShown: false,
                 tabBarIcon: ({ focused }) =>
                     focused ? (
-                        <User name='account-details' color='#7CB9E8' size={24} />
+                        <User name='account-details' color='blue' size={24} />
                     ) : (
                         <User name='account-details' color='black' size={24} />
                     )
