@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import { View, Text, ScrollView, Image, TouchableOpacity, Modal, TextInput, Button, Pressable } from 'react-native'
 import Add from 'react-native-vector-icons/AntDesign'
+import AddModal from './AddModal';
 
 export default function HomeScreen() {
     const todos = [];
@@ -56,37 +57,7 @@ export default function HomeScreen() {
             <TouchableOpacity onPress={() => setModalVisible(true)} style={{ position: 'absolute', bottom: 15, right: 15 }}>
                 <Add name='pluscircle' color='#7CB9E8' size={55} />
             </TouchableOpacity>
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => setModalVisible(false)}
-            >
-                <View style={{ flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-                    <View style={{ backgroundColor: 'white', padding: 20, height: 500 }}>
-                        <TextInput
-                            placeholder="Write title.."
-                            value={title}
-                            onChangeText={(text) => setTitle(text)}
-                            style={{ marginBottom: 10, borderBottomWidth: 1, borderBottomColor: 'gray' }}
-                        />
-                        <TextInput
-                            placeholder="Write Details"
-                            value={detail}
-                            onChangeText={(text) => setDetail(text)}
-                            style={{ marginBottom: 10, borderBottomWidth: 1, borderBottomColor: 'gray' }}
-                        />
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: "center", marginBottom: 10 }}>
-                            <TouchableOpacity style={{ backgroundColor: 'blue', paddingHorizontal: 30, paddingVertical: 10, borderRadius: 5, marginTop: 10 }} onPress={addTodo}>
-                                <Text style={{ color: 'white', textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 16 }}>Add</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={{ backgroundColor: 'red', paddingHorizontal: 30, paddingVertical: 10, borderRadius: 5, marginTop: 10 }} onPress={() => setModalVisible(false)}>
-                                <Text style={{ color: 'white', textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 16 }}>Cancel</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </View>
-            </Modal>
+            <AddModal modalVisible={modalVisible} setModalVisible={setModalVisible} addTodo={addTodo} title={title} setTitle={setTitle} detail={detail} setDetail={setDetail} />
         </View>
     )
 }
