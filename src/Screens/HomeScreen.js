@@ -16,7 +16,7 @@ export default function HomeScreen() {
                 detail: detail
             }
             axios
-                .post("http://162.16.2.190:3000/todos/661eb47db380e37e5a5bb700", todoData)
+                .post("http://1162.16.2.55:3000/todos/661eb47db380e37e5a5bb700", todoData)
                 .then((response) => {
                     console.log(response);
                 })

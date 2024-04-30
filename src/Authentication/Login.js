@@ -38,7 +38,7 @@ export default function Login() {
         };
 
         axios
-            .post("http://162.16.2.190:3000/login", user)
+            .post("http://162.16.2.55:3000/login", user)
             .then((response) => {
                 const token = response.data.token;
                 console.log("token", token);
