@@ -107,13 +107,13 @@ app.post("/todos/:oldUserId", async (req, res) => {
     try {
         const userId = req.params.oldUserId;
         const { title, detail } = req.body;
-        const dueDate = moment().format("YYYY-MM-DD");
+
 
         // Create a new todo with the provided details
         const newTodo = new Todo({
             title,
             detail,
-            dueDate
+            dueDate: moment().format("YYYY-MM-DD")
         });
         await newTodo.save();
 
@@ -124,13 +124,47 @@ app.post("/todos/:oldUserId", async (req, res) => {
         }
 
         // Add the new todo's ID to the user's todos array
-        user.todos.push(newTodo._id);
+        user?.todos.push(newTodo._id);
         await user.save();
         res.status(200).json({ message: "Todo added successfully", todo: newTodo });
     } catch (error) {
-        console.log("Error adding todo:", error);
-        // Return error response
         res.status(500).json({ message: "Todo not added" });
     }
 });
 
+app.get("/users/:userId/todos", async (req, res) => {
+    try {
+        const userId = res.params.userId;
+        const user = await User.findById(userId).populate("todos")
+        if (!user) {
+            return res.status(404).json({ error: "user not found" });
+        }
+
+        res.status(200).json({ todos: user.todos });
+
+    } catch (error) {
+        res.send(500).json({ error: "Something went wrong" });
+    }
+});
+
+app.patch("/todos/:todoId/complete", async (req, res) => {
+    try {
+        const todoId = req.params.todoId;
+
+        const updatedTodo = await Todo.findByIdAndUpdate(
+            todoId,
+            {
+                status: "completed",
+            },
+            { new: true }
+        );
+
+        if (!updatedTodo) {
+            return res.status(404).json({ error: "Todo not found" });
+        }
+
+        res.status(200).json({ message: "Todo marked as complete", todo: updatedTodo });
+    } catch (error) {
+        res.status(500).json({ error: "Something went wrong" });
+    }
+});

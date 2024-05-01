@@ -1,14 +1,17 @@
 import axios from 'axios';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, ScrollView, Image, TouchableOpacity, Modal, TextInput, Button, Pressable } from 'react-native'
 import Add from 'react-native-vector-icons/AntDesign'
 import AddModal from './AddModal';
 
 export default function HomeScreen() {
-    const todos = [];
+    const [todos, setTodos] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [title, setTitle] = useState("");
     const [detail, setDetail] = useState("");
+    const [marked, setMarked] = useState(false);
+    const [pendingTodos, setPendingTodos] = useState([]);
+    const [completedTodos, setCompletedTodos] = useState([]);
 
     const addTodo = async () => {
         try {
@@ -17,7 +20,7 @@ export default function HomeScreen() {
                 detail: detail
             }
             axios
-                .post("http://1162.16.2.55:3000/todos/661eb47db380e37e5a5bb700", todoData)
+                .post("http://162.16.2.55:3000/todos/6624c8c34203818567d78bec", todoData)
                 .then((response) => {
                     console.log(response);
                 })
@@ -31,6 +34,36 @@ export default function HomeScreen() {
             console.log(error);
         }
     };
+
+    useEffect(() => {
+        getUserTodos();
+    }, []);
+    const getUserTodos = async () => {
+        try {
+            const response = await axios.get(
+                `http://162.16.2.55:3000/users/6624c8c34203818567d78bec/todos`
+            );
+
+            console.log(response.data.todos);
+            setTodos(response.data.todos);
+
+            const fetchedTodos = response.data.todos || [];
+            const pending = fetchedTodos.filter(
+                (todo) => todo.status !== "completed"
+            );
+
+            const completed = fetchedTodos.filter(
+                (todo) => todo.status === "completed"
+            );
+
+            setPendingTodos(pending);
+            setCompletedTodos(completed);
+        } catch (error) {
+            console.log("error", error);
+        }
+    };
+    console.log(completedTodos);
+    console.log(pendingTodos);
 
     return (
         <View style={{ padding: 8, height: '100%' }}>
