@@ -9,7 +9,6 @@ export default function HomeScreen() {
     const [modalVisible, setModalVisible] = useState(false);
     const [title, setTitle] = useState("");
     const [detail, setDetail] = useState("");
-    const [marked, setMarked] = useState(false);
     const [pendingTodos, setPendingTodos] = useState([]);
     const [completedTodos, setCompletedTodos] = useState([]);
 
