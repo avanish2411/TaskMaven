@@ -19,7 +19,7 @@ export default function HomeScreen() {
                 detail: detail
             }
             axios
-                .post("http://162.16.2.55:3000/todos/6624c8c34203818567d78bec", todoData)
+                .post("http://162.16.1.8:3000/todos/6624c8c34203818567d78bec", todoData)
                 .then((response) => {
                     console.log(response);
                 })
@@ -40,7 +40,7 @@ export default function HomeScreen() {
     const getUserTodos = async () => {
         try {
             const response = await axios.get(
-                `http://162.16.2.55:3000/users/6624c8c34203818567d78bec/todos`
+                `http://162.16.1.8:3000/users/6624c8c34203818567d78bec/todos`
             );
 
             console.log(response.data.todos);
