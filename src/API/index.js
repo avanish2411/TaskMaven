@@ -5,6 +5,13 @@ const mongoose = require("mongoose");
 const crypto = require("crypto");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
+const User = require('./Models/UserDetails.js');
+
+// Importing TodoDetail model
+
+const Todo = require('./Models/TodoDetails.js')
+
+
 
 //adding moment 
 const moment = require("moment")
@@ -38,12 +45,8 @@ app.listen(port, () => {
 });
 
 // Importing User model
-require('./Models/UserDetails');
-const User = mongoose.model("UserInfo");
 
-// Importing TodoDetail model
-require('./Models/TodoDetails')
-const Todo = mongoose.model("ToDoInfo");
+
 
 // Register endpoint
 app.post('/register', async (req, res) => {
@@ -107,8 +110,6 @@ app.post("/todos/:oldUserId", async (req, res) => {
     try {
         const userId = req.params.oldUserId;
         const { title, detail } = req.body;
-
-
         // Create a new todo with the provided details
         const newTodo = new Todo({
             title,
@@ -116,13 +117,11 @@ app.post("/todos/:oldUserId", async (req, res) => {
             dueDate: moment().format("YYYY-MM-DD")
         });
         await newTodo.save();
-
         // Find the user by ID
         const user = await User.findById(userId);
         if (!user) {
             return res.status(404).json({ error: "User not found" });
         }
-
         // Add the new todo's ID to the user's todos array
         user?.todos.push(newTodo._id);
         await user.save();
@@ -135,17 +134,20 @@ app.post("/todos/:oldUserId", async (req, res) => {
 app.get("/users/:userId/todos", async (req, res) => {
     try {
         const userId = req.params.userId;
-        const user = await User.findById(userId).populate("todos")
+        console.log("User ID:", userId);
+        const user = await User.findById(userId).populate('todos');
+        console.log("User:", user);
         if (!user) {
             return res.status(404).json({ error: "User not found" });
         }
-
-        return res.status(200).json({ todos: user.todos });
-
+        return res.status(200).json(user.todos);
     } catch (error) {
+        console.error("Error:", error);
         return res.status(500).json({ error: "Something went wrong" });
     }
 });
+
+
 
 app.patch("/todos/:todoId/complete", async (req, res) => {
     try {

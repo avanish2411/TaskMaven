@@ -37,24 +37,22 @@ export default function HomeScreen() {
     useEffect(() => {
         getUserTodos();
     }, []);
+
     const getUserTodos = async () => {
         try {
             const response = await axios.get(
                 `http://162.16.1.8:3000/users/6624c8c34203818567d78bec/todos`
             );
+            console.log(response.data); // Check response data structure
+            setTodos(response.data);
 
-            console.log(response.data.todos);
-            setTodos(response.data.todos);
-
-            const fetchedTodos = response.data.todos || [];
+            const fetchedTodos = response.data || [];
             const pending = fetchedTodos.filter(
                 (todo) => todo.status !== "completed"
             );
-
             const completed = fetchedTodos.filter(
                 (todo) => todo.status === "completed"
             );
-
             setPendingTodos(pending);
             setCompletedTodos(completed);
         } catch (error) {

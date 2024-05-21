@@ -17,7 +17,7 @@ export default function Register({ navigation }) {
             password: password
         }
         axios
-            .post("http://162.16.2.55:3000/register", userData)
+            .post("http://162.16.1.8:3000/register", userData)
             .then((res) => {
                 console.log(res.data);
                 Alert.alert("Login success", "You have been logged in successfully");

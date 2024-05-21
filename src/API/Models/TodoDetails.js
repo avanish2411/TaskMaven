@@ -22,9 +22,10 @@ const TodoDetailSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
-},{
-    collection:"ToDoInfo"
+}, {
+    collection: "ToDoInfo"
 });
 
 
-mongoose.model("ToDoInfo", TodoDetailSchema);
+const todoschema = mongoose.model("Todo", TodoDetailSchema);
+module.exports = todoschema;
