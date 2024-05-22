@@ -135,12 +135,6 @@ app.get("/users/:userId/todos", async (req, res) => {
     try {
         const userId = req.params.userId;
         console.log("User ID:", userId);
-        const user = await User.findById(userId).populate('todos');
-        console.log("User:", user);
-        if (!user) {
-            return res.status(404).json({ error: "User not found" });
-        }
-        return res.status(200).json(user.todos);
     } catch (error) {
         console.error("Error:", error);
         return res.status(500).json({ error: "Something went wrong" });
