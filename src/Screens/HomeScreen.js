@@ -1,8 +1,9 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { View, Text, ScrollView, Image, TouchableOpacity, Modal, TextInput, Button, Pressable } from 'react-native'
-import Add from 'react-native-vector-icons/AntDesign'
+import Add from 'react-native-vector-icons/AntDesign';
 import AddModal from './AddModal';
+import Check from 'react-native-vector-icons/Feather';
 
 export default function HomeScreen() {
     const [todos, setTodos] = useState([]);
@@ -11,6 +12,7 @@ export default function HomeScreen() {
     const [detail, setDetail] = useState("");
     const [pendingTodos, setPendingTodos] = useState([]);
     const [completedTodos, setCompletedTodos] = useState([]);
+    const [marked, setMarked] = useState(false);
 
     const addTodo = async () => {
         try {
@@ -22,6 +24,7 @@ export default function HomeScreen() {
                 .post("http://162.16.1.8:3000/todos/6624c8c34203818567d78bec", todoData)
                 .then((response) => {
                     console.log(response);
+                    getUserTodos();
                 })
                 .catch((error) => {
                     console.log(error);
@@ -36,14 +39,13 @@ export default function HomeScreen() {
 
     useEffect(() => {
         getUserTodos();
-    }, []);
+    }, [marked]);
 
     const getUserTodos = async () => {
         try {
             const response = await axios.get(
                 `http://162.16.1.8:3000/users/6624c8c34203818567d78bec/todos`
             );
-            console.log(response.data); // Check response data structure
             setTodos(response.data);
 
             const fetchedTodos = response.data || [];
@@ -59,8 +61,20 @@ export default function HomeScreen() {
             console.log("error", error);
         }
     };
-    console.log(completedTodos);
-    console.log(pendingTodos);
+
+    console.log("CompletedTodos: ", completedTodos);
+    console.log("PendingTodos: ", pendingTodos);
+
+    const markedTodoAsCompleted = async (todoId) => {
+        try {
+            setMarked(true);
+            const response = await axios.patch(`http://162.16.1.8:3000/todos/${todoId}/complete`);
+            console.log(response.data);
+            getUserTodos();
+        } catch (error) {
+            console.log("error", error);
+        }
+    };
 
     return (
         <View style={{ padding: 8, height: '100%' }}>
@@ -68,9 +82,26 @@ export default function HomeScreen() {
             <ScrollView>
                 <View>
                     {
-                        todos.length > 0 ? (
+                        todos?.length > 0 ? (
                             <View>
-
+                                {pendingTodos?.map((item, index) => (
+                                    <Pressable key={index} onPress={() => markedTodoAsCompleted(item._id)} style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 5, backgroundColor: '#7CB9E8', padding: 8, borderRadius: 15 }}>
+                                        <View>
+                                            <Text style={{ color: 'black', fontSize: 18, fontWeight: 'bold' }}>{item?.title}</Text>
+                                            <Text style={{ color: 'black', fontSize: 16 }}>{item?.detail}</Text>
+                                        </View>
+                                        <Check name='check-circle' color='#000' size={25} style={{ marginLeft: 'auto' }} />
+                                    </Pressable>
+                                ))}
+                                {completedTodos.length > 0 && <View style={{ marginTop: 15 }}><Text style={{ color: 'black', fontSize: 22 }}>CompletedTodos</Text></View>}
+                                {completedTodos?.map((item, index) => (
+                                    <Pressable key={index} onPress={() => markedTodoAsCompleted(item._id)} style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 5, backgroundColor: '#7CB9E8', padding: 8, borderRadius: 15 }}>
+                                        <View>
+                                            <Text style={{ color: 'gray', fontSize: 18, fontWeight: 'bold', textDecorationLine: "line-through" }}>{item?.title}</Text>
+                                            <Text style={{ color: 'gray', fontSize: 16, textDecorationLine: "line-through" }}>{item?.detail}</Text>
+                                        </View>
+                                    </Pressable>
+                                ))}
                             </View>
                         ) : (
                             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: '70%' }}>

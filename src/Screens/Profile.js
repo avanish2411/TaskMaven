@@ -8,7 +8,7 @@ export default function Profile() {
 
   const fetchTaskData = async () => {
     try {
-      const response = await axios.get("http://162.16.2.190:3000/todos/count")
+      const response = await axios.get("http://162.16.1.8:3000/todos/count")
       const { totalCompletedTodos, totalPendingTodos } = response.data;
       setCompletedTasks(totalCompletedTodos);
       setPendingTasks(totalPendingTodos);
@@ -19,7 +19,8 @@ export default function Profile() {
 
   useEffect(() => {
     fetchTaskData();
-  }, [])
+  }, []);
+
   console.log("completed", completedTasks);
   console.log("pending", pendingTasks);
 
