@@ -134,7 +134,11 @@ app.post("/todos/:oldUserId", async (req, res) => {
 app.get("/users/:userId/todos", async (req, res) => {
     try {
         const userId = req.params.userId;
-        console.log("User ID:", userId);
+        const user = await User.findById(userId).populate('todos');
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+        return res.status(200).json(user.todos);
     } catch (error) {
         console.error("Error:", error);
         return res.status(500).json({ error: "Something went wrong" });
@@ -142,11 +146,9 @@ app.get("/users/:userId/todos", async (req, res) => {
 });
 
 
-
 app.patch("/todos/:todoId/complete", async (req, res) => {
     try {
         const todoId = req.params.todoId;
-
         const updatedTodo = await Todo.findByIdAndUpdate(
             todoId,
             {
@@ -154,11 +156,9 @@ app.patch("/todos/:todoId/complete", async (req, res) => {
             },
             { new: true }
         );
-
         if (!updatedTodo) {
             return res.status(404).json({ error: "Todo not found" });
         }
-
         res.status(200).json({ message: "Todo marked as complete", todo: updatedTodo });
     } catch (error) {
         res.status(500).json({ error: "Something went wrong" });
