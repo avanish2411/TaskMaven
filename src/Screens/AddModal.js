@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text , Modal, TextInput, TouchableOpacity,} from 'react-native'
+import { View, Text, Modal, TextInput, TouchableOpacity, } from 'react-native'
 
 export default function AddModal({ modalVisible, setModalVisible, addTodo, title, setTitle, detail, setDetail }) {
     return (
