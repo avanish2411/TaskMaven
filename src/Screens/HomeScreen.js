@@ -24,11 +24,12 @@ export default function HomeScreen() {
                 .post("http://162.16.1.8:3000/todos/6624c8c34203818567d78bec", todoData)
                 .then((response) => {
                     console.log(response);
-                    getUserTodos();
+
                 })
                 .catch((error) => {
                     console.log(error);
                 })
+            await getUserTodos();
             setModalVisible(false);
             setTitle("")
             setDetail("")
@@ -62,9 +63,6 @@ export default function HomeScreen() {
         }
     };
 
-    console.log("CompletedTodos: ", completedTodos);
-    console.log("PendingTodos: ", pendingTodos);
-
     const markedTodoAsCompleted = async (todoId) => {
         try {
             setMarked(true);
@@ -75,6 +73,10 @@ export default function HomeScreen() {
             console.log("error", error);
         }
     };
+
+    console.log("CompletedTodos: ", completedTodos);
+    console.log("PendingTodos: ", pendingTodos);
+
 
     return (
         <View style={{ padding: 8, height: '100%' }}>
