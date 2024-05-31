@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { View, Text, ScrollView, Image, TouchableOpacity, Modal, TextInput, Button, Pressable } from 'react-native'
+import { View, Text, ScrollView, Image, TouchableOpacity, Pressable } from 'react-native'
 import Add from 'react-native-vector-icons/AntDesign';
 import AddModal from './AddModal';
 import Check from 'react-native-vector-icons/Feather';

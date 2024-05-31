@@ -1,29 +1,26 @@
-// Importing required modules
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const crypto = require("crypto");
-const cors = require("cors");
-const jwt = require("jsonwebtoken");
-const User = require('./Models/UserDetails.js');
 
-// Importing TodoDetail model
 
-const Todo = require('./Models/TodoDetails.js')
-
-//adding moment 
-const moment = require("moment")
-
-// Creating Express app
 const app = express();
 const port = 3000;
-
-// Enabling CORS
+const cors = require("cors");
 app.use(cors());
 
-// Body parser middleware
+const jwt = require("jsonwebtoken");
+const moment = require("moment");
+
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+
+// Importing TodoDetail model
+const Todo = require('./Models/TodoDetails.js');
+const User = require('./Models/UserDetails.js');
+
 
 // MongoDB connection setup
 const mongoUrl = "mongodb+srv://avanishpratapsingh45:avanish@cluster0.cgavtwr.mongodb.net/";
@@ -36,6 +33,7 @@ mongoose
     .catch((error) => {
         console.log("Error in connecting to MongoDB", error);
     });
+
 
 // Listening to port
 app.listen(port, () => {
@@ -100,46 +98,51 @@ app.post("/login", async (req, res) => {
     }
 });
 
-app.post("/todos/:oldUserId", async (req, res) => {
+// Posting todos
+app.post("/todos/:userId", async (req, res) => {
     try {
-        const userId = req.params.oldUserId;
-        const { title, detail } = req.body;
-        // Create a new todo with the provided details
+        const userId = req.params.userId;
+        const { title, category } = req.body;
+
         const newTodo = new Todo({
             title,
-            detail,
-            dueDate: moment().format("YYYY-MM-DD")
+            category,
+            dueDate: moment().format("YYYY-MM-DD"),
         });
+
         await newTodo.save();
-        // Find the user by ID
+
         const user = await User.findById(userId);
         if (!user) {
-            return res.status(404).json({ error: "User not found" });
+            res.status(404).json({ error: "User not found" });
         }
-        // Add the new todo's ID to the user's todos array
+
         user?.todos.push(newTodo._id);
         await user.save();
-        res.status(200).json({ message: "Todo added successfully", todo: newTodo });
+
+        res.status(200).json({ message: "Todo added sucessfully", todo: newTodo });
     } catch (error) {
-        res.status(500).json({ message: "Todo not added" });
+        res.status(200).json({ message: "Todo not added" });
     }
 });
 
+// Getting todos
 app.get("/users/:userId/todos", async (req, res) => {
     try {
         const userId = req.params.userId;
-        const user = await User.findById(userId).populate('todos');
+
+        const user = await User.findById(userId).populate("todos");
         if (!user) {
-            return res.status(404).json({ error: "User not found" });
+            return res.status(404).json({ error: "user not found" });
         }
-        return res.status(200).json(user.todos);
+
+        res.status(200).json({ todos: user.todos });
     } catch (error) {
-        console.error("Error:", error);
-        return res.status(500).json({ error: "Something went wrong" });
+        res.status(500).json({ error: "Something went wrong" });
     }
 });
 
-
+// Marking Completing
 app.patch("/todos/:todoId/complete", async (req, res) => {
     try {
         const todoId = req.params.todoId;
@@ -159,9 +162,11 @@ app.patch("/todos/:todoId/complete", async (req, res) => {
     }
 });
 
+// getting completed todos
 app.get("/todos/completed/:date", async (req, res) => {
     try {
         const date = req.params.date;
+
         const completedTodos = await Todo.find({
             status: "completed",
             createdAt: {
@@ -170,12 +175,13 @@ app.get("/todos/completed/:date", async (req, res) => {
             },
         }).exec();
 
-        res.status(200).json({completedTodos});
+        res.status(200).json({ completedTodos });
     } catch (error) {
         res.status(500).json({ error: "Something went wrong" });
     }
 });
 
+// counting no of todos
 app.get("/todos/count", async (req, res) => {
     try {
         const totalCompletedTodos = await Todo.countDocuments({
