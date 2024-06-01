@@ -21,15 +21,14 @@ export default function HomeScreen() {
                 detail: detail
             }
             axios
-                .post("http://162.16.1.8:3000/todos/6624c8c34203818567d78bec", todoData)
+                .post(`http://162.16.1.8:3000/todos/665aec991e83b3620ad38a35`, todoData)
                 .then((response) => {
-                    console.log(response);
-
+                    getUserTodos();
                 })
                 .catch((error) => {
                     console.log(error);
                 })
-            await getUserTodos();
+            
             setModalVisible(false);
             setTitle("")
             setDetail("")
@@ -45,11 +44,11 @@ export default function HomeScreen() {
     const getUserTodos = async () => {
         try {
             const response = await axios.get(
-                `http://162.16.1.8:3000/users/6624c8c34203818567d78bec/todos`
+                `http://162.16.1.8:3000/users/665aec991e83b3620ad38a35/todos`
             );
-            setTodos(response.data);
+            setTodos(response.data.todos);
 
-            const fetchedTodos = response.data || [];
+            const fetchedTodos = response.data.todos || [];
             const pending = fetchedTodos.filter(
                 (todo) => todo.status !== "completed"
             );

@@ -102,11 +102,11 @@ app.post("/login", async (req, res) => {
 app.post("/todos/:userId", async (req, res) => {
     try {
         const userId = req.params.userId;
-        const { title, category } = req.body;
+        const { title, detail } = req.body;
 
         const newTodo = new Todo({
             title,
-            category,
+            detail,
             dueDate: moment().format("YYYY-MM-DD"),
         });
 
